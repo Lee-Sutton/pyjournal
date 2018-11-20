@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
 """Console script for pyjournal."""
-import sys
 import click
 import os
+import datetime
 
 
 @click.group()
@@ -17,7 +17,9 @@ def init(path):
     """Initializes journal directory if it does not exist"""
     journal_path = os.path.abspath(path)
     click.echo(f'Journal initialized at {journal_path}')
-    os.makedirs(os.path.join(journal_path, '2018/11'))
+    today = datetime.datetime.today()
+    os.makedirs(os.path.join(journal_path, f'{today.year}/{today.month}'))
+
 
 cli.add_command(init)
 

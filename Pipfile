@@ -15,6 +15,7 @@ PyInstaller = "==3.3.1"
 Sphinx = "==1.7.1"
 twine = "==1.10.0"
 pylint = "*"
+freezegun = "*"
 
 [packages]
 click = "==6.7"
