@@ -23,11 +23,22 @@ def journal_test_dir(tmpdir):
     yield test_journal_path
 
 
+@pytest.mark.func
 @freeze_time('Jan 1 2020')
-def test_init(runner, journal_test_dir):
-    """Test the init journal command"""
+def test_cli(runner, journal_test_dir):
+    """Functional test suite for the cli"""
+
+    # The user initializes the journal
     result = runner.invoke(cli.init, args=['--path', journal_test_dir])
     assert result.exit_code == 0
     assert f'Journal initialized at {journal_test_dir}' in result.output
+
+    # A directory is created for the journal notes
     assert path.exists(journal_test_dir)
+
+    # The user wants to create a journal entry for today
+    # A directory is created for the current year and month
+    result = runner.invoke(cli.today)
+    assert result.exit_code == 0
     assert path.exists(path.join(journal_test_dir, '2020/1'))
+

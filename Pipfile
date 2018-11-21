@@ -19,3 +19,4 @@ freezegun = "*"
 
 [packages]
 click = "==6.7"
+tinydb = "*"
