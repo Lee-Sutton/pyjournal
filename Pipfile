@@ -16,6 +16,7 @@ Sphinx = "==1.7.1"
 twine = "==1.10.0"
 pylint = "*"
 freezegun = "*"
+pytest-watch = "*"
 
 [packages]
 click = "==6.7"

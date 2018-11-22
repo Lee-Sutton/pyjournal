@@ -5,7 +5,6 @@ import click
 import os
 import datetime
 
-
 @click.group()
 def cli():
     pass
@@ -26,7 +25,6 @@ def today():
     Opens the journal entry for today. A new document
     is created if it does not already exist
     """
-    print('this was invoked')
     today = datetime.datetime.today()
     os.makedirs(os.path.join(journal_path, f'{today.year}/{today.month}'))
 

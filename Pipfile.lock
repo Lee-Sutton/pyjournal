@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "70ddae786509225abfa5e9be084a7ca372593b22aebf3515830fea0257f5bc58"
+            "sha256": "3a17c2c21dd1d881631acc5346f524dfca00f555b7372403885fcbc9cd34dd90"
         },
         "pipfile-spec": 6,
         "requires": {},
@@ -92,6 +92,13 @@
             ],
             "version": "==3.0.4"
         },
+        "colorama": {
+            "hashes": [
+                "sha256:a3d89af5db9e9806a779a50296b5fdb466e281147c2c235e8225ecc6dbf7bbf3",
+                "sha256:c9b54bebe91a6a803e0772c8561d53f2926bfeb17cd141fbabcb08424086595c"
+            ],
+            "version": "==0.4.0"
+        },
         "coverage": {
             "hashes": [
                 "sha256:03481e81d558d30d230bc12999e3edffe392d244349a90f4ef9b88425fac74ba",
@@ -129,6 +136,12 @@
                 "sha256:f3f501f345f24383c0000395b26b726e46758b71393267aeae0bd36f8b3ade80"
             ],
             "version": "==4.5.1"
+        },
+        "docopt": {
+            "hashes": [
+                "sha256:49b3a825280bd66b3aa83585ef59c4a8c82f2c8a522dbe754a8bc8d08c85c491"
+            ],
+            "version": "==0.6.2"
         },
         "docutils": {
             "hashes": [
@@ -363,6 +376,12 @@
                 "sha256:feca6166c9c3b535441a9818126c9030101417c057892f29ffd5d8ae56613f35"
             ],
             "version": "==2.11.1"
+        },
+        "pytest-watch": {
+            "hashes": [
+                "sha256:06136f03d5b361718b8d0d234042f7b2f203910d8568f63df2f866b547b3d4b9"
+            ],
+            "version": "==4.2.0"
         },
         "python-dateutil": {
             "hashes": [
