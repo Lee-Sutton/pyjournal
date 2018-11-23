@@ -1,13 +1,12 @@
 import os
-from unittest.mock import patch
+from pyjournal.database import initialize_database
 
 
-@patch('pyjournal.utils.makedirs_touch')
-def test_database_initialization(makedirs_mock, tmpdir):
+def test_database_initialization(tmpdir):
     """it should create the database connection based on the environment variable"""
     db_path = str(tmpdir.join('config.json'))
     os.environ['DB_PATH'] = db_path
-    from pyjournal.database import db
+    db = initialize_database()
     assert db.tables() is not None
-    makedirs_mock.assert_called_with(db_path)
+    assert os.path.exists(db_path)
 

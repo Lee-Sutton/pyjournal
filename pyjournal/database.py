@@ -5,10 +5,9 @@ from tinydb import TinyDB
 DEFAULT_DATABASE_DIRECTORY = os.path.join(os.path.dirname(__file__), '../config.json')
 
 
-def _initialize_datbase():
+def initialize_database():
     path = os.getenv('DB_PATH', DEFAULT_DATABASE_DIRECTORY)
+    print(path)
     makedirs_touch(path)
     return TinyDB(path)
 
-
-db = _initialize_datbase()
