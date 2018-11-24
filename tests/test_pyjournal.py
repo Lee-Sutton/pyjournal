@@ -37,8 +37,9 @@ def test_db(tmpdir):
 
 @pytest.mark.func
 @freeze_time('Jan 1 2020')
+@patch('os.chdir')
 @patch('subprocess.call')
-def test_cli(subprocess_mock, runner, journal_test_dir, test_db):
+def test_cli(subprocess_mock, chdir_mock, runner, journal_test_dir, test_db):
     """Functional test suite for the cli"""
 
     # The user initializes the journal
@@ -60,6 +61,7 @@ def test_cli(subprocess_mock, runner, journal_test_dir, test_db):
 
     # The user is cd'ed into the Journal Directory and vim is opened
     # with the new file
-    subprocess_mock.assert_called_with(['cd', config['journal_path'], '&&', 'vim', journal_file])
+    chdir_mock.assert_called_with(config['journal_path'])
+    subprocess_mock.assert_called_with(['nvim', journal_file])
 
 

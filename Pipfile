@@ -17,6 +17,7 @@ twine = "==1.10.0"
 pylint = "*"
 freezegun = "*"
 pytest-watch = "*"
+pytest-cov = "*"
 
 [packages]
 click = "==6.7"

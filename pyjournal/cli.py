@@ -21,10 +21,13 @@ def cli():
 def init(path):
     """Initializes journal directory if it does not exist"""
     db = initialize_database()
-    journal_path = os.path.abspath(path)
+    journal_path = os.path.abspath(os.path.expanduser(path))
     click.echo(f'Journal initialized at {journal_path}')
     db.insert({'journal_path': journal_path})
-    os.makedirs(journal_path)
+    try:
+        os.makedirs(journal_path)
+    except:
+        pass
 
 
 @click.command()
@@ -39,10 +42,12 @@ def today():
     journal_file = os.path.join(config['journal_path'], f'{today.year}/{today.month}/{today.day}.md')
 
     makedirs_touch(journal_file)
-    subprocess.call(['cd', config['journal_path'], '&&', 'vim', journal_file])
+    os.chdir(config['journal_path'])
+    subprocess.call(['nvim', journal_file])
 
 
 cli.add_command(init)
+cli.add_command(today)
 
 if __name__ == "__main__":
     cli()
