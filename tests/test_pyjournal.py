@@ -3,36 +3,14 @@
 
 """Tests for `pyjournal` package."""
 
-import os
 from os import path
 from unittest.mock import patch
 
 import pytest
-from click.testing import CliRunner
 from freezegun import freeze_time
 from tinydb import where
 
 from pyjournal import cli
-from pyjournal.database import initialize_database
-
-
-@pytest.fixture()
-def runner():
-    return CliRunner()
-
-
-@pytest.fixture
-def journal_test_dir(tmpdir):
-    test_journal_path = path.join(tmpdir, 'Journal')
-    yield test_journal_path
-
-
-@pytest.fixture()
-def test_db(tmpdir):
-    """creates a temporary database for testing"""
-    os.environ['DB_PATH'] = str(tmpdir.join('config.json'))
-    yield initialize_database()
-    os.environ.pop('DB_PATH')
 
 
 @pytest.mark.func
@@ -49,6 +27,7 @@ def test_cli(subprocess_mock, chdir_mock, runner, journal_test_dir, test_db):
 
     config = test_db.get(where('journal_path') == journal_test_dir)
     assert config['journal_path'] == journal_test_dir
+
     # A directory is created for the journal notes
     assert path.exists(journal_test_dir)
 
@@ -73,4 +52,3 @@ def test_cli(subprocess_mock, chdir_mock, runner, journal_test_dir, test_db):
     assert result.exit_code == 0
     chdir_mock.assert_called_with(config['journal_path'])
     subprocess_mock.assert_called_with(['grep', '-ri', 'TODO', '.'])
-
