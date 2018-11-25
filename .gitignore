@@ -106,3 +106,4 @@ ENV/
 
 # Ide
 .idea
+.vscode
