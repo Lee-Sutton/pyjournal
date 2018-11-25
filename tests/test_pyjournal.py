@@ -64,4 +64,13 @@ def test_cli(subprocess_mock, chdir_mock, runner, journal_test_dir, test_db):
     chdir_mock.assert_called_with(config['journal_path'])
     subprocess_mock.assert_called_with(['nvim', journal_file])
 
+    # The user opens the journal and add some tasks
+    task = 'TODO finish this task!'
+    with open(journal_file, 'w') as f:
+        f.write(task)
+
+    result = runner.invoke(cli.tasks)
+    assert result.exit_code == 0
+    chdir_mock.assert_called_with(config['journal_path'])
+    subprocess_mock.assert_called_with(['grep', '-ri', 'TODO', '.'])
 

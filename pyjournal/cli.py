@@ -46,8 +46,18 @@ def today():
     subprocess.call(['nvim', journal_file])
 
 
+@click.command()
+def tasks():
+    """Lists all tasks in the journal"""
+    db = initialize_database()
+    config = db.get(Query().journal_path.exists())
+    os.chdir(config['journal_path'])
+    subprocess.call(['grep', '-ri', 'TODO', '.'])
+
+
 cli.add_command(init)
 cli.add_command(today)
+cli.add_command(tasks)
 
 if __name__ == "__main__":
     cli()
