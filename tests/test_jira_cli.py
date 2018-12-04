@@ -1,6 +1,7 @@
 """Jira connection test suite"""
 from pyjournal.jira_connection import jira
 from unittest.mock import patch
+from tinydb import Query
 
 
 @patch('pyjournal.jira_connection.JIRA')
@@ -15,6 +16,11 @@ def test_jira_cli(mock_jira, runner, test_db):
     assert result.exit_code == 0
 
     mock_jira.assert_called_with(url, auth=(email, password))
-    # assert 'Jira connection successful' in result.output
 
-
+    # The data should be stored in the database
+    config = test_db.get(Query().jira.exists())
+    jira_config = config['jira']
+    assert jira_config is not None
+    assert jira_config['url'] == url
+    assert jira_config['email'] == email
+    assert jira_config['password'] == password

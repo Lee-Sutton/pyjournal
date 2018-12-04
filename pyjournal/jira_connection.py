@@ -1,6 +1,8 @@
 import click
 from jira import JIRA
 
+from pyjournal.database import initialize_database
+
 
 def test_jira_connection(url, email, password):
     JIRA(url, auth=(email, password))
@@ -16,6 +18,12 @@ def jira(init):
 
     if init:
         test_jira_connection(url, email, password)
+        db = initialize_database()
+        db.insert({'jira': {
+            'url': url,
+            'email': email,
+            'password': password,
+        }})
 
 
 def main():
