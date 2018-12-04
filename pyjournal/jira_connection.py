@@ -1,4 +1,21 @@
+import click
 from jira import JIRA
+
+
+def test_jira_connection(url, email, password):
+    JIRA(url, auth=(email, password))
+
+
+@click.command()
+@click.option('--init', is_flag=True, help='initializes your jira connection')
+def jira(init):
+    """Lists jira tasks assigned to the user"""
+    url = click.prompt('Please enter your jira url')
+    email = click.prompt('Please enter your email')
+    password = click.prompt('Password', hide_input=True)
+
+    if init:
+        test_jira_connection(url, email, password)
 
 
 def main():

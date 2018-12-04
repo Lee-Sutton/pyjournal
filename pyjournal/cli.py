@@ -8,6 +8,7 @@ import os
 import datetime
 from pyjournal.database import initialize_database
 from pyjournal.utils import makedirs_touch
+from pyjournal.jira_connection import jira
 from tinydb import Query
 
 
@@ -24,6 +25,7 @@ def init(path):
     journal_path = os.path.abspath(os.path.expanduser(path))
     click.echo(f'Journal initialized at {journal_path}')
     db.insert({'journal_path': journal_path})
+    # FIXME prompt the user if it's already there
     try:
         os.makedirs(journal_path)
     except:
@@ -58,6 +60,7 @@ def tasks():
 cli.add_command(init)
 cli.add_command(today)
 cli.add_command(tasks)
+cli.add_command(jira)
 
 if __name__ == "__main__":
     cli()
