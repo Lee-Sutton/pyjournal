@@ -1,7 +1,8 @@
 from jira import JIRA
 
 
-# class JiraConnection:
+class Jira:
+    pass
 #     def __init__(self, url, email, password):
 #
 #
@@ -15,4 +16,3 @@ from jira import JIRA
 #             return jira_connection.search_issues(f'sprint={sprint.id} AND assignee = currentUser()')
 #
 #
-

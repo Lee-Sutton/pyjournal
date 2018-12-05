@@ -8,7 +8,7 @@ import os
 import datetime
 from pyjournal.database import initialize_database
 from pyjournal.utils import makedirs_touch
-from pyjournal.jira_connection import jira
+from pyjournal.jira_cli import jira
 from tinydb import Query
 
 
