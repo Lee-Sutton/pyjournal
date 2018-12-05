@@ -4,7 +4,7 @@ from unittest.mock import patch
 from tinydb import Query
 
 
-@patch('pyjournal.jira_connection.JIRA')
+@patch('pyjournal.jira_connection')
 def test_jira_cli(mock_jira, runner, test_db):
     """It should allow the user to initialize their jira settings"""
     # The user wants to initialize their jira connection
@@ -24,3 +24,8 @@ def test_jira_cli(mock_jira, runner, test_db):
     assert jira_config['url'] == url
     assert jira_config['email'] == email
     assert jira_config['password'] == password
+
+    # The user wants to get all their active issues
+    result = runner.invoke(jira)
+    assert result.exit_code == 0
+
