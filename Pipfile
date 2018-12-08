@@ -18,6 +18,7 @@ pylint = "*"
 freezegun = "*"
 pytest-watch = "*"
 pytest-cov = "*"
+faker = "*"
 
 [packages]
 click = "==6.7"
