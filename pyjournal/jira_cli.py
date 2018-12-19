@@ -1,5 +1,7 @@
 import click
+from requests.exceptions import MissingSchema
 from tinydb import Query
+
 from pyjournal.database import initialize_database
 from pyjournal.jira_connection import Jira
 
@@ -15,16 +17,21 @@ def jira(init):
         email = click.prompt('Please enter your email')
         password = click.prompt('Password', hide_input=True)
 
-        Jira(url, email, password)
+        try:
+            Jira(url, email, password)
+            db.insert({'jira': {
+                'url': url,
+                'email': email,
+                'password': password,
+            }})
 
-        db.insert({'jira': {
-            'url': url,
-            'email': email,
-            'password': password,
-        }})
+        except MissingSchema:
+            click.echo('Invalid Jira configuration check your url')
+
+
     else:
         config = db.get(Query().jira.exists())
         jira_config = config['jira']
         jira_connection = Jira(**jira_config)
         for issue in jira_connection.active_issues():
-            print(issue)
+            click.echo(issue)

@@ -3,6 +3,7 @@ from pyjournal.jira_cli import jira
 from unittest.mock import patch
 from tinydb import Query
 import pytest
+from requests.exceptions import MissingSchema
 
 URL = 'dummy_url'
 EMAIL = 'lee@e.com'
@@ -33,6 +34,17 @@ def test_jira_init(mock_jira, runner, test_db):
     assert jira_config['url'] == URL
     assert jira_config['email'] == EMAIL
     assert jira_config['password'] == PASSWORD
+
+
+@patch('pyjournal.jira_cli.Jira')
+def test_invalid_jira_connection(mock_jira, runner):
+    """
+    It should inform the user if the jira url is invalid
+    """
+    mock_jira.side_effect = MissingSchema('Invalid URL')
+    result = runner.invoke(jira, args=['--init'], input=f'{URL}\n{EMAIL}\n{PASSWORD}\n')
+    mock_jira.assert_called()
+    assert 'Invalid Jira' in result.output
 
 
 @patch('pyjournal.jira_cli.Jira')

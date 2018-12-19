@@ -26,10 +26,9 @@ def init(path):
     click.echo(f'Journal initialized at {journal_path}')
     db.insert({'journal_path': journal_path})
     # FIXME prompt the user if it's already there
-    try:
+
+    if not os.path.exists(journal_path):
         os.makedirs(journal_path)
-    except:
-        pass
 
 
 @click.command()
