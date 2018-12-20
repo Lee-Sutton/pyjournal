@@ -9,7 +9,7 @@ class Jira:
     def __init__(self, url, email, password):
         self._jira = JIRA(url, auth=(email, password))
 
-    def get_active_issues(self, board_id=DEFAULT_BOARD):
+    def active_issues(self, board_id=DEFAULT_BOARD):
         """Searches for active issues on the input board"""
         for sprint in self._jira.sprints(board_id=board_id):
             if sprint.state == 'ACTIVE':

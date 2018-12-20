@@ -1,6 +1,6 @@
 """Jira connection test suite"""
 from pyjournal.jira_cli import jira
-from unittest.mock import patch
+from unittest.mock import patch, MagicMock
 from tinydb import Query
 import pytest
 from requests.exceptions import MissingSchema
@@ -17,6 +17,13 @@ def jira_populated_db(test_db):
         'email': EMAIL,
         'password': PASSWORD,
     }})
+
+
+@pytest.fixture()
+def mock_issue():
+    issue = MagicMock()
+    issue.__str__.return_value = 'test issue'
+    return issue
 
 
 @patch('pyjournal.jira_cli.Jira')
@@ -48,13 +55,13 @@ def test_invalid_jira_connection(mock_jira, runner):
 
 
 @patch('pyjournal.jira_cli.Jira')
-def test_jira_issues(mock_jira, runner, jira_populated_db):
+def test_jira_issues(mock_jira, runner, jira_populated_db, mock_issue):
     """
     Given: The user has already initialized their jira connection
     Expect: The user should be able to fetch all their jira issues
     """
-    mock_jira().active_issues.return_value = ['test issue']
+    mock_jira().active_issues.return_value = [mock_issue]
     result = runner.invoke(jira)
     assert result.exit_code == 0
     mock_jira.assert_called_with(url=URL, email=EMAIL, password=PASSWORD)
-    assert 'test issue' in result.output
+    assert str(mock_issue) in result.output

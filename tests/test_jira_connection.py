@@ -32,7 +32,7 @@ def test_active_issues(jira_api):
 
     jira = Jira(url, email, password)
     board_id = 2
-    issues = jira.get_active_issues(board_id)
+    issues = jira.active_issues(board_id)
 
     assert issues is not None
     jira_api().sprints.assert_called_with(board_id=board_id)

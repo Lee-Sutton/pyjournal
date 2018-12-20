@@ -6,6 +6,14 @@ from pyjournal.database import initialize_database
 from pyjournal.jira_connection import Jira
 
 
+def format_issue(issue):
+    """Formats the jira issue for easy display/reading
+    :param issue - Input issue to format
+    :return {str} - Formatted string containing the issue number, name, type and status
+    """
+    return f'[${issue}] {issue.fields.summary}'
+
+
 @click.command()
 @click.option('--init', is_flag=True, help='initializes your jira connection')
 def jira(init):
@@ -28,10 +36,11 @@ def jira(init):
         except MissingSchema:
             click.echo('Invalid Jira configuration check your url')
 
-
     else:
         config = db.get(Query().jira.exists())
         jira_config = config['jira']
         jira_connection = Jira(**jira_config)
-        for issue in jira_connection.active_issues():
-            click.echo(issue)
+
+        active_issues = jira_connection.active_issues()
+        for issue in active_issues:
+            click.echo(format_issue(issue))
