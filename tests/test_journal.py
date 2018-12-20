@@ -10,7 +10,7 @@ import pytest
 from freezegun import freeze_time
 from tinydb import where
 
-from pyjournal import cli
+from pyjournal.journal import init, today, tasks
 
 
 @pytest.mark.func
@@ -21,7 +21,7 @@ def test_cli(subprocess_mock, chdir_mock, runner, journal_test_dir, test_db):
     """Functional test suite for the cli"""
 
     # The user initializes the journal
-    result = runner.invoke(cli.init, args=['--path', journal_test_dir])
+    result = runner.invoke(init, args=['--path', journal_test_dir])
     assert result.exit_code == 0
     assert f'Journal initialized at {journal_test_dir}' in result.output
 
@@ -33,7 +33,7 @@ def test_cli(subprocess_mock, chdir_mock, runner, journal_test_dir, test_db):
 
     # The user wants to create a journal entry for today
     # A directory is created for the current year and month
-    result = runner.invoke(cli.today)
+    result = runner.invoke(today)
     assert result.exit_code == 0
     journal_file = path.join(journal_test_dir, '2020/1/1.md')
     assert path.exists(journal_file)
@@ -48,7 +48,7 @@ def test_cli(subprocess_mock, chdir_mock, runner, journal_test_dir, test_db):
     with open(journal_file, 'w') as f:
         f.write(task)
 
-    result = runner.invoke(cli.tasks)
+    result = runner.invoke(tasks)
     assert result.exit_code == 0
     chdir_mock.assert_called_with(config['journal_path'])
     subprocess_mock.assert_called_with(['grep', '-ri', 'TODO', '.'])

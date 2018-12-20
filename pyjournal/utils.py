@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-"""Database management and inititialization"""
+"""Database management and initialization"""
 import os
 
 
@@ -12,4 +12,3 @@ def makedirs_touch(path):
 
     with open(path, 'a'):
         os.utime(path, None)
-
