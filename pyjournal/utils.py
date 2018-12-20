@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-"""Database management and inititialization"""
+"""Database management and initialization"""
 import os
 
 

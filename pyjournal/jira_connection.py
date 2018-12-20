@@ -13,4 +13,5 @@ class Jira:
         """Searches for active issues on the input board"""
         for sprint in self._jira.sprints(board_id=board_id):
             if sprint.state == 'ACTIVE':
-                return self._jira.search_issues(f'sprint={sprint.id} AND assignee = currentUser()')
+                return self._jira.search_issues(
+                    f'sprint={sprint.id} AND assignee = currentUser()')

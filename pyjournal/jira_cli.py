@@ -9,7 +9,8 @@ from pyjournal.jira_connection import Jira
 def format_issue(issue):
     """Formats the jira issue for easy display/reading
     :param issue - Input issue to format
-    :return {str} - Formatted string containing the issue number, name, type and status
+    :return {str} - Formatted string containing the issue number,
+    name, type and status
     """
     return f'[${issue}] {issue.fields.summary}'
 

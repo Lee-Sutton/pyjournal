@@ -30,7 +30,8 @@ def today():
     db = initialize_database()
     config = db.get(Query().journal_path.exists())
     today = datetime.datetime.today()
-    journal_file = os.path.join(config['journal_path'], f'{today.year}/{today.month}/{today.day}.md')
+    journal_file = os.path.join(config['journal_path'],
+                                f'{today.year}/{today.month}/{today.day}.md')
 
     makedirs_touch(journal_file)
     os.chdir(config['journal_path'])
