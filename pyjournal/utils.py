@@ -12,4 +12,3 @@ def makedirs_touch(path):
 
     with open(path, 'a'):
         os.utime(path, None)
-
