@@ -3,8 +3,8 @@
 """Console script for pyjournal."""
 
 import click
-from pyjournal.jira_cli import jira
-from pyjournal.journal import init, today, tasks
+from pyjournal.jira_commands import jira
+from pyjournal.journal_commands import init, today, tasks
 
 
 @click.group()

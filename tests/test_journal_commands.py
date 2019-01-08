@@ -10,7 +10,7 @@ import pytest
 from freezegun import freeze_time
 from tinydb import where
 
-from pyjournal.journal import init, today, tasks
+from pyjournal.journal_commands import init, today, tasks
 
 
 @pytest.mark.func
