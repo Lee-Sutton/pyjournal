@@ -39,6 +39,11 @@ def jira(init):
 
     else:
         config = db.get(Query().jira.exists())
+        if config is None:
+            click.echo('No jira credentials provided run:')
+            click.echo('pyjournal jira --init')
+            return
+
         jira_config = config['jira']
         jira_connection = Jira(**jira_config)
 
