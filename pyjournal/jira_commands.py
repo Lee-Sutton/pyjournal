@@ -36,28 +36,27 @@ def init_jira_connection():
 
 def fetch_active_jira_issues():
     """Fetches active jira issues for the user in the database"""
-    pass
+    db = initialize_database()
+    config = db.get(Query().jira.exists())
+    if config is None:
+        click.echo('No jira credentials provided run:')
+        click.echo('pyjournal jira --init')
+        return
+
+    jira_config = config['jira']
+    jira_connection = Jira(**jira_config)
+
+    active_issues = jira_connection.active_issues()
+    for issue in active_issues:
+        click.echo(format_issue(issue))
+
 
 @click.command()
 @click.option('--init', is_flag=True, help='initializes your jira connection')
 def jira(init):
     """Lists jira tasks assigned to the user"""
-    db = initialize_database()
-
     if init:
         init_jira_connection()
 
     else:
         fetch_active_jira_issues()
-        config = db.get(Query().jira.exists())
-        if config is None:
-            click.echo('No jira credentials provided run:')
-            click.echo('pyjournal jira --init')
-            return
-
-        jira_config = config['jira']
-        jira_connection = Jira(**jira_config)
-
-        active_issues = jira_connection.active_issues()
-        for issue in active_issues:
-            click.echo(format_issue(issue))
