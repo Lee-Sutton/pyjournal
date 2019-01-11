@@ -15,6 +15,29 @@ def format_issue(issue):
     return f'[${issue}] {issue.fields.summary}'
 
 
+def init_jira_connection():
+    """Initializes the jira conenction and stores the credentials in the"""
+    db = initialize_database()
+    url = click.prompt('Please enter your jira url')
+    email = click.prompt('Please enter your email')
+    password = click.prompt('Password', hide_input=True)
+
+    try:
+        Jira(url, email, password)
+        db.insert({'jira': {
+            'url': url,
+            'email': email,
+            'password': password,
+        }})
+
+    except MissingSchema:
+        click.echo('Invalid Jira configuration check your url')
+
+
+def fetch_active_jira_issues():
+    """Fetches active jira issues for the user in the database"""
+    pass
+
 @click.command()
 @click.option('--init', is_flag=True, help='initializes your jira connection')
 def jira(init):
@@ -22,22 +45,10 @@ def jira(init):
     db = initialize_database()
 
     if init:
-        url = click.prompt('Please enter your jira url')
-        email = click.prompt('Please enter your email')
-        password = click.prompt('Password', hide_input=True)
-
-        try:
-            Jira(url, email, password)
-            db.insert({'jira': {
-                'url': url,
-                'email': email,
-                'password': password,
-            }})
-
-        except MissingSchema:
-            click.echo('Invalid Jira configuration check your url')
+        init_jira_connection()
 
     else:
+        fetch_active_jira_issues()
         config = db.get(Query().jira.exists())
         if config is None:
             click.echo('No jira credentials provided run:')
