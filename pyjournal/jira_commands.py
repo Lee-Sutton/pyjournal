@@ -34,7 +34,7 @@ def init_jira_connection():
         click.echo('Invalid Jira configuration check your url')
 
 
-def fetch_active_jira_issues():
+def fetch_users_active_issues():
     """Fetches active jira issues for the user in the database"""
     db = initialize_database()
     config = db.get(Query().jira.exists())
@@ -59,4 +59,4 @@ def jira(init):
         init_jira_connection()
 
     else:
-        fetch_active_jira_issues()
+        fetch_users_active_issues()
