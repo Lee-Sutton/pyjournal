@@ -3,6 +3,8 @@ from os import path
 
 import pytest
 from click.testing import CliRunner
+import faker
+from faker.providers import internet
 
 from pyjournal.database import initialize_database
 
@@ -24,3 +26,11 @@ def test_db(tmpdir):
     os.environ['DB_PATH'] = str(tmpdir.join('config.json'))
     yield initialize_database()
     os.environ.pop('DB_PATH')
+
+
+@pytest.fixture()
+def fake():
+    """Returns instance of faker initialized with internet provider"""
+    fake = faker.Faker()
+    fake.add_provider(internet)
+    yield fake

@@ -1,5 +1,5 @@
 """Jira connection test suite"""
-from pyjournal.jira_cli import jira
+from pyjournal.jira_commands import jira
 from unittest.mock import patch, MagicMock
 from tinydb import Query
 import pytest
@@ -26,10 +26,11 @@ def mock_issue():
     return issue
 
 
-@patch('pyjournal.jira_cli.Jira')
+@patch('pyjournal.jira_commands.Jira')
 def test_jira_init(mock_jira, runner, test_db):
     """It should allow the user to initialize their jira settings"""
-    result = runner.invoke(jira, args=['--init'], input=f'{URL}\n{EMAIL}\n{PASSWORD}\n')
+    result = runner.invoke(jira, args=['--init'],
+                           input=f'{URL}\n{EMAIL}\n{PASSWORD}\n')
     assert result.exit_code == 0
 
     mock_jira.assert_called_with(URL, EMAIL, PASSWORD)
@@ -43,18 +44,28 @@ def test_jira_init(mock_jira, runner, test_db):
     assert jira_config['password'] == PASSWORD
 
 
-@patch('pyjournal.jira_cli.Jira')
+@patch('pyjournal.jira_commands.Jira')
 def test_invalid_jira_connection(mock_jira, runner):
     """
     It should inform the user if the jira url is invalid
     """
     mock_jira.side_effect = MissingSchema('Invalid URL')
-    result = runner.invoke(jira, args=['--init'], input=f'{URL}\n{EMAIL}\n{PASSWORD}\n')
+    result = runner.invoke(jira, args=['--init'],
+                           input=f'{URL}\n{EMAIL}\n{PASSWORD}\n')
     mock_jira.assert_called()
     assert 'Invalid Jira' in result.output
 
 
-@patch('pyjournal.jira_cli.Jira')
+def test_jira_issues_wihtout_credentials(runner):
+    """
+    It should prompt the user to enter credentials if not present in the db
+    """
+    result = runner.invoke(jira)
+    assert result.exit_code == 0
+    assert 'No jira credentials provided' in result.output
+
+
+@patch('pyjournal.jira_commands.Jira')
 def test_jira_issues(mock_jira, runner, jira_populated_db, mock_issue):
     """
     Given: The user has already initialized their jira connection

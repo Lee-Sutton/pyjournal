@@ -1,15 +1,10 @@
 from collections import namedtuple
 from unittest.mock import patch
 from pyjournal.jira_connection import Jira
-import faker
-from faker.providers import internet
-
-fake = faker.Faker()
-fake.add_provider(internet)
 
 
 @patch('pyjournal.jira_connection.JIRA')
-def test_jira(jira_api):
+def test_jira(jira_api, fake):
     url = fake.url()
     email = fake.email()
     password = 'password'
@@ -23,7 +18,7 @@ Sprint = namedtuple('Sprint', ['state', 'id'])
 
 
 @patch('pyjournal.jira_connection.JIRA')
-def test_active_issues(jira_api):
+def test_active_issues(jira_api, fake):
     url = fake.url()
     email = fake.email()
     password = 'password'
