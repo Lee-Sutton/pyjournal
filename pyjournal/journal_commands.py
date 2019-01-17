@@ -44,4 +44,5 @@ def tasks():
     db = initialize_database()
     config = db.get(Query().journal_path.exists())
     os.chdir(config['journal_path'])
-    subprocess.call(['grep', '-ri', 'TODO', '.'])
+    tasks = subprocess.check_output(['grep', '-ri', 'TODO', '.'])
+    click.echo(tasks)
