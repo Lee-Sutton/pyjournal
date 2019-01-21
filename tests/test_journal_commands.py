@@ -10,7 +10,7 @@ import pytest
 from freezegun import freeze_time
 from tinydb import where
 
-from pyjournal.journal_commands import init, today, tasks
+from pyjournal.journal_commands import init, today, tasks, topic
 from pyjournal.utils import makedirs_touch
 
 
@@ -42,14 +42,15 @@ def test_today(chdir_mock, subprocess_mock, initialized_database, runner,
                journal_test_dir):
     # The user wants to create a journal entry for today
     # A directory is created for the current year and month
-    config = initialized_database.get(where('journal_path') == journal_test_dir)
     result = runner.invoke(today)
     assert result.exit_code == 0
     journal_file = path.join(journal_test_dir, '2020/1/1.md')
 
     # The user is cd'ed into the Journal Directory and vim is opened
     # with the new file
-    chdir_mock.assert_called_with(config['journal_path'])
+    chdir_mock.assert_called_with(journal_test_dir)
+
+    # FIXME create a function for editor and mock this out to use it
     subprocess_mock.assert_called_with(['nvim', journal_file])
 
 
@@ -67,3 +68,10 @@ def test_todo(runner, journal_test_dir, initialized_database):
     result = runner.invoke(tasks)
     assert result.exit_code == 0
     assert task in result.output
+
+
+@freeze_time('Jan 1 2020')
+def test_topic(runner, journal_test_dir, initialized_database):
+    """The user wants to a new journal file for the input topic"""
+    result = runner.invoke(topic)
+    assert result.exit_code == 0
