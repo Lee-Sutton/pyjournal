@@ -71,7 +71,12 @@ def test_todo(runner, journal_test_dir, initialized_database):
 
 
 @freeze_time('Jan 1 2020')
-def test_topic(runner, journal_test_dir, initialized_database):
+@patch('subprocess.call')
+def test_topic(subprocess_mock, runner, journal_test_dir, initialized_database):
     """The user wants to a new journal file for the input topic"""
-    result = runner.invoke(topic)
+    result = runner.invoke(topic, args=['dummy topic'])
     assert result.exit_code == 0
+
+    journal_file = path.join(journal_test_dir, f'2020/1/dummy-topic.md')
+    # FIXME create a function for editor and mock this out to use it
+    subprocess_mock.assert_called_with(['nvim', journal_file])
