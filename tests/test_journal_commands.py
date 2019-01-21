@@ -11,7 +11,7 @@ import pytest
 from freezegun import freeze_time
 from tinydb import where
 
-from pyjournal.journal_commands import init, today, tasks
+from pyjournal.journal_commands import init, today, tasks, topic
 from pyjournal.utils import makedirs_touch
 
 
@@ -70,8 +70,8 @@ def test_todo(runner, journal_test_dir, initialized_database):
     assert task in result.output
 
 
-# @freeze_time('Jan 1 2020')
-# def test_topic(runner, journal_test_dir, initialized_database):
-#     """The user wants to a new journal file for the input topic"""
-#     result = runner.invoke(topic)
-#     assert result.exit_code == 0
+@freeze_time('Jan 1 2020')
+def test_topic(runner, journal_test_dir, initialized_database):
+    """The user wants to a new journal file for the input topic"""
+    result = runner.invoke(topic)
+    assert result.exit_code == 0

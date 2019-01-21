@@ -46,3 +46,9 @@ def tasks():
     os.chdir(config['journal_path'])
     tasks = subprocess.check_output(['grep', '-ri', 'TODO', '.'])
     click.echo(tasks)
+
+
+@click.command()
+def topic():
+    """Creates a new document for the input topic"""
+    pass
