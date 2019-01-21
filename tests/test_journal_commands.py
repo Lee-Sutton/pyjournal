@@ -3,6 +3,7 @@
 
 """Tests for `pyjournal` package."""
 
+import os
 from os import path
 from unittest.mock import patch
 
@@ -10,7 +11,7 @@ import pytest
 from freezegun import freeze_time
 from tinydb import where
 
-from pyjournal.journal_commands import init, today, tasks, topic
+from pyjournal.journal_commands import init, today, tasks
 from pyjournal.utils import makedirs_touch
 
 
@@ -37,8 +38,7 @@ def test_init(runner, journal_test_dir, test_db):
 
 @freeze_time('Jan 1 2020')
 @patch('subprocess.call')
-@patch('os.chdir')
-def test_today(chdir_mock, subprocess_mock, initialized_database, runner,
+def test_today(subprocess_mock, initialized_database, runner,
                journal_test_dir):
     # The user wants to create a journal entry for today
     # A directory is created for the current year and month
@@ -48,7 +48,7 @@ def test_today(chdir_mock, subprocess_mock, initialized_database, runner,
 
     # The user is cd'ed into the Journal Directory and vim is opened
     # with the new file
-    chdir_mock.assert_called_with(journal_test_dir)
+    assert os.getcwd() == journal_test_dir
 
     # FIXME create a function for editor and mock this out to use it
     subprocess_mock.assert_called_with(['nvim', journal_file])
@@ -70,8 +70,8 @@ def test_todo(runner, journal_test_dir, initialized_database):
     assert task in result.output
 
 
-@freeze_time('Jan 1 2020')
-def test_topic(runner, journal_test_dir, initialized_database):
-    """The user wants to a new journal file for the input topic"""
-    result = runner.invoke(topic)
-    assert result.exit_code == 0
+# @freeze_time('Jan 1 2020')
+# def test_topic(runner, journal_test_dir, initialized_database):
+#     """The user wants to a new journal file for the input topic"""
+#     result = runner.invoke(topic)
+#     assert result.exit_code == 0
