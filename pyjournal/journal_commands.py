@@ -3,6 +3,7 @@ import os
 import datetime
 from pyjournal.database import initialize_database
 from pyjournal.utils import makedirs_touch
+from pyjournal.editor import open_editor
 from tinydb import Query
 import click
 
@@ -35,7 +36,7 @@ def today():
 
     makedirs_touch(journal_file)
     os.chdir(config['journal_path'])
-    subprocess.call(['nvim', journal_file])
+    open_editor(journal_file)
 
 
 @click.command()
@@ -62,5 +63,4 @@ def topic(topic_title):
 
     makedirs_touch(journal_file)
     os.chdir(config['journal_path'])
-    subprocess.call(['nvim', journal_file])
-    pass
+    open_editor(journal_file)
