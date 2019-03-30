@@ -22,6 +22,15 @@ def init(path):
         os.makedirs(journal_path)
 
 
+@click.command(name='open')
+def open_journal():
+    """Opens the journal"""
+    db = initialize_database()
+    config = db.get(Query().journal_path.exists())
+    os.chdir(config['journal_path'])
+    open_editor(config['journal_path'])
+
+
 @click.command()
 def today():
     """
