@@ -4,7 +4,7 @@
 
 import click
 from pyjournal.jira_commands import jira
-from pyjournal.journal_commands import init, today, tasks, topic
+from pyjournal.journal_commands import init, today, tasks, topic, open_journal
 
 
 @click.group()
@@ -13,6 +13,7 @@ def cli():
 
 
 cli.add_command(init)
+cli.add_command(open_journal)
 cli.add_command(today)
 cli.add_command(tasks)
 cli.add_command(jira)

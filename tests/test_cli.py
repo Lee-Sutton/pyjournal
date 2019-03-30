@@ -9,3 +9,4 @@ def test_cli(runner):
     assert 'tasks' in result.output
     assert 'jira' in result.output
     assert 'topic' in result.output
+    assert 'open' in result.output
