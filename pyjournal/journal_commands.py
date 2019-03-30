@@ -59,7 +59,7 @@ def topic(topic_title):
 
     filename = topic_title.replace(' ', '-')
     journal_file = os.path.join(config['journal_path'],
-                                f'{today.year}/{today.month}/{filename}.md')
+                                f'topics/{filename}.md')
 
     makedirs_touch(journal_file)
     os.chdir(config['journal_path'])

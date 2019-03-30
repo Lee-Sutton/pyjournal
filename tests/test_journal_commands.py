@@ -60,7 +60,7 @@ def test_topic(open_editor, runner, journal_test_dir, initialized_database):
     result = runner.invoke(topic, args=['dummy topic'])
     assert result.exit_code == 0
 
-    journal_file = path.join(journal_test_dir, f'2020/1/dummy-topic.md')
+    journal_file = path.join(journal_test_dir, f'topics/dummy-topic.md')
     open_editor.assert_called_with(journal_file)
 
 
