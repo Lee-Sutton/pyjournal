@@ -7,7 +7,7 @@ pyjournal
         :target: https://pypi.python.org/pypi/pyjournal
 
 .. image:: https://img.shields.io/travis/lee-sutton/pyjournal.svg
-        :target: https://travis-ci.org/lee-sutton/pyjournal
+        :target: https://travis-ci.org/Lee-Sutton/pyjournal.svg?branch=master
 
 .. image:: https://readthedocs.org/projects/pyjournal/badge/?version=latest
         :target: https://pyjournal.readthedocs.io/en/latest/?badge=latest
