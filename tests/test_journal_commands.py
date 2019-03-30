@@ -11,7 +11,7 @@ import pytest
 from freezegun import freeze_time
 from tinydb import where
 
-from pyjournal.journal_commands import init, today, tasks, topic
+from pyjournal.journal_commands import init, today, tasks, topic, open_journal
 from pyjournal.utils import makedirs_touch
 
 
@@ -53,6 +53,19 @@ def test_today(open_editor, initialized_database, runner,
     open_editor.assert_called_with(journal_file)
 
 
+@patch('pyjournal.journal_commands.open_editor', autospec=True)
+def test_open(open_editor, initialized_database, runner, journal_test_dir):
+    # The user wants to create a journal entry for today
+    # A directory is created for the current year and month
+    result = runner.invoke(open_journal)
+    assert result.exit_code == 0
+
+    # The user is cd'ed into the Journal Directory and vim is opened
+    # with the new file
+    assert os.getcwd() == journal_test_dir
+    open_editor.assert_called_with(journal_test_dir)
+
+
 @freeze_time('Jan 1 2020')
 @patch('pyjournal.journal_commands.open_editor', autospec=True)
 def test_topic(open_editor, runner, journal_test_dir, initialized_database):
@@ -60,7 +73,7 @@ def test_topic(open_editor, runner, journal_test_dir, initialized_database):
     result = runner.invoke(topic, args=['dummy topic'])
     assert result.exit_code == 0
 
-    journal_file = path.join(journal_test_dir, f'2020/1/dummy-topic.md')
+    journal_file = path.join(journal_test_dir, f'topics/dummy-topic.md')
     open_editor.assert_called_with(journal_file)
 
 
