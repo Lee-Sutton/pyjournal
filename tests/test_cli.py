@@ -8,3 +8,4 @@ def test_cli(runner):
     assert 'today' in result.output
     assert 'tasks' in result.output
     assert 'jira' in result.output
+    assert 'topic' in result.output

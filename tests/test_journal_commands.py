@@ -3,6 +3,7 @@
 
 """Tests for `pyjournal` package."""
 
+import os
 from os import path
 from unittest.mock import patch
 
@@ -10,16 +11,19 @@ import pytest
 from freezegun import freeze_time
 from tinydb import where
 
-from pyjournal.journal_commands import init, today, tasks
+from pyjournal.journal_commands import init, today, tasks, topic
+from pyjournal.utils import makedirs_touch
 
 
-@pytest.mark.func
+@pytest.fixture()
+def initialized_database(runner, journal_test_dir, test_db):
+    """Returns an initialized instance of the database"""
+    runner.invoke(init, args=['--path', journal_test_dir])
+    yield test_db
+
+
 @freeze_time('Jan 1 2020')
-@patch('os.chdir')
-@patch('subprocess.call')
-def test_cli(subprocess_mock, chdir_mock, runner, journal_test_dir, test_db):
-    """Functional test suite for the cli"""
-
+def test_init(runner, journal_test_dir, test_db):
     # The user initializes the journal
     result = runner.invoke(init, args=['--path', journal_test_dir])
     assert result.exit_code == 0
@@ -31,24 +35,46 @@ def test_cli(subprocess_mock, chdir_mock, runner, journal_test_dir, test_db):
     # A directory is created for the journal notes
     assert path.exists(journal_test_dir)
 
+
+@freeze_time('Jan 1 2020')
+@patch('pyjournal.journal_commands.open_editor', autospec=True)
+def test_today(open_editor, initialized_database, runner,
+               journal_test_dir):
     # The user wants to create a journal entry for today
     # A directory is created for the current year and month
     result = runner.invoke(today)
     assert result.exit_code == 0
     journal_file = path.join(journal_test_dir, '2020/1/1.md')
-    assert path.exists(journal_file)
 
     # The user is cd'ed into the Journal Directory and vim is opened
     # with the new file
-    chdir_mock.assert_called_with(config['journal_path'])
-    subprocess_mock.assert_called_with(['nvim', journal_file])
+    assert os.getcwd() == journal_test_dir
+
+    open_editor.assert_called_with(journal_file)
+
+
+@freeze_time('Jan 1 2020')
+@patch('pyjournal.journal_commands.open_editor', autospec=True)
+def test_topic(open_editor, runner, journal_test_dir, initialized_database):
+    """The user wants to a new journal file for the input topic"""
+    result = runner.invoke(topic, args=['dummy topic'])
+    assert result.exit_code == 0
+
+    journal_file = path.join(journal_test_dir, f'2020/1/dummy-topic.md')
+    open_editor.assert_called_with(journal_file)
+
+
+@freeze_time('Jan 1 2020')
+def test_todo(runner, journal_test_dir, initialized_database):
+    """The user wants to list all the tasks in their journal"""
+    journal_file = path.join(journal_test_dir, '2020/1/1.md')
+    makedirs_touch(journal_file)
 
     # The user opens the journal and add some tasks
     task = 'TODO finish this task!'
-    with open(journal_file, 'w') as f:
+    with open(journal_file, '+w') as f:
         f.write(task)
 
     result = runner.invoke(tasks)
     assert result.exit_code == 0
-    chdir_mock.assert_called_with(config['journal_path'])
-    subprocess_mock.assert_called_with(['grep', '-ri', 'TODO', '.'])
+    assert task in result.output
