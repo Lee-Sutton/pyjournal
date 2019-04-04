@@ -11,7 +11,8 @@ import pytest
 from freezegun import freeze_time
 from tinydb import where
 
-from pyjournal.journal_commands import init, today, tasks, topic, open_journal
+from pyjournal.journal_commands import init, today, topic, open_journal
+from pyjournal.tasks_commands import tasks
 from pyjournal.utils import makedirs_touch
 
 

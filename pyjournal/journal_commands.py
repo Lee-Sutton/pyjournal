@@ -1,4 +1,3 @@
-import subprocess
 import os
 import datetime
 from pyjournal.database import initialize_database
@@ -46,16 +45,6 @@ def today():
     makedirs_touch(journal_file)
     os.chdir(config['journal_path'])
     open_editor(journal_file)
-
-
-@click.command()
-def tasks():
-    """Lists all tasks in the journal"""
-    db = initialize_database()
-    config = db.get(Query().journal_path.exists())
-    os.chdir(config['journal_path'])
-    tasks = subprocess.check_output(['grep', '-ri', 'TODO', '.'])
-    click.echo(tasks)
 
 
 @click.command()

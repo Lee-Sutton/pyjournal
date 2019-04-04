@@ -4,7 +4,8 @@
 
 import click
 from pyjournal.jira_commands import jira
-from pyjournal.journal_commands import init, today, tasks, topic, open_journal
+from pyjournal.journal_commands import init, today, topic, open_journal
+from pyjournal.tasks_commands import tasks
 
 
 @click.group()
