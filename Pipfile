@@ -19,9 +19,13 @@ freezegun = "*"
 pytest-watch = "*"
 pytest-cov = "*"
 faker = "*"
+black = "*"
 
 [packages]
 click = "*"
 tinydb = "*"
 jira = "*"
 pygithub = "*"
+
+[pipenv]
+allow_prereleases = true
