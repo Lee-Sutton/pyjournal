@@ -53,7 +53,6 @@ def topic(topic_title):
     """Creates a new document for the input topic"""
     db = initialize_database()
     config = db.get(Query().journal_path.exists())
-    today = datetime.datetime.today()
 
     filename = topic_title.replace(' ', '-')
     journal_file = os.path.join(config['journal_path'],
