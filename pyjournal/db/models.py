@@ -11,6 +11,7 @@ class Task(peewee.Model):
     name = peewee.CharField()
     is_done = peewee.DateTimeField(default=datetime.datetime.now())
     created_at = peewee.BitField(default=False)
+    is_archived = peewee.BitField(default=False)
 
     class Meta:
         database = DATABASE
