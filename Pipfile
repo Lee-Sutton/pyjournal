@@ -20,6 +20,7 @@ pytest-watch = "*"
 pytest-cov = "*"
 faker = "*"
 black = "*"
+yapf = "*"
 
 [packages]
 click = "*"

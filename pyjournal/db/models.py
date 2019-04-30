@@ -1,8 +1,11 @@
 """Database models"""
 import datetime
+import os
 import peewee
 
-DATABASE = peewee.SqliteDatabase("tasks.db")
+DEFAULT_DATABASE_DIRECTORY = os.path.join(os.path.dirname(__file__), "db.sqlite3")
+
+DATABASE = peewee.SqliteDatabase(DEFAULT_DATABASE_DIRECTORY)
 
 
 class Task(peewee.Model):
