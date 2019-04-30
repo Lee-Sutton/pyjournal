@@ -8,6 +8,7 @@ from faker.providers import internet
 
 from pyjournal.database import initialize_database
 from pyjournal.db import models
+from pyjournal.journal_commands import init
 
 
 @pytest.fixture()
@@ -28,13 +29,13 @@ def test_db(tmpdir):
     yield initialize_database()
     os.environ.pop('DB_PATH')
 
+
 @pytest.fixture()
 def db():
     """Initializes the database for testing purposes"""
     models.initialize_db()
     yield
     models.drop_db()
-
 
 
 @pytest.fixture()
@@ -44,3 +45,9 @@ def fake():
     fake.add_provider(internet)
     yield fake
 
+
+@pytest.fixture()
+def initialized_database(runner, journal_test_dir, test_db):
+    """Returns an initialized instance of the database"""
+    runner.invoke(init, args=['--path', journal_test_dir])
+    yield test_db

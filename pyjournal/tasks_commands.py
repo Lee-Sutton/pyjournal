@@ -15,3 +15,8 @@ def tasks():
     os.chdir(config['journal_path'])
     tasks = subprocess.check_output(['grep', '-ri', 'TODO', '.'])
     click.echo(tasks)
+
+
+@click.command()
+def add_task():
+    pass
