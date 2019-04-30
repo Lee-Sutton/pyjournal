@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
 """Tests for `pyjournal` package."""
 
 import os
@@ -12,7 +11,6 @@ from freezegun import freeze_time
 from tinydb import where
 
 from pyjournal.journal_commands import init, today, topic, open_journal
-
 
 
 @freeze_time('Jan 1 2020')
@@ -31,8 +29,7 @@ def test_init(runner, journal_test_dir, test_db):
 
 @freeze_time('Jan 1 2020')
 @patch('pyjournal.journal_commands.open_editor', autospec=True)
-def test_today(open_editor, initialized_database, runner,
-               journal_test_dir):
+def test_today(open_editor, initialized_database, runner, journal_test_dir):
     # The user wants to create a journal entry for today
     # A directory is created for the current year and month
     result = runner.invoke(today)
@@ -68,4 +65,3 @@ def test_topic(open_editor, runner, journal_test_dir, initialized_database):
 
     journal_file = path.join(journal_test_dir, f'topics/dummy-topic.md')
     open_editor.assert_called_with(journal_file)
-

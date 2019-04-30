@@ -1,7 +1,8 @@
 from os import path
 from freezegun import freeze_time
 from pyjournal.utils import makedirs_touch
-from pyjournal.tasks_commands import tasks
+from pyjournal.tasks_commands import tasks, add_task
+from pyjournal.db.models import Task
 
 
 @freeze_time('Jan 1 2020')
@@ -18,3 +19,12 @@ def test_todo(runner, journal_test_dir, initialized_database):
     result = runner.invoke(tasks)
     assert result.exit_code == 0
     assert task in result.output
+
+
+def test_add_task(db, runner):
+    """it should add a task to the db"""
+    task = 'dummy task here'
+    result = runner.invoke(add_task, args=[task])
+    assert result.exit_code == 0
+    saved_task = Task.select().where(Task.name == task)
+    assert len(saved_task)

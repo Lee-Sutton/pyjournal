@@ -5,6 +5,7 @@ import click
 from tinydb import Query
 
 from pyjournal.database import initialize_database
+from pyjournal.db.models import Task
 
 
 @click.command()
@@ -18,5 +19,6 @@ def tasks():
 
 
 @click.command()
-def add_task():
+@click.argument('task')
+def add_task(task):
     pass
