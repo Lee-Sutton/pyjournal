@@ -25,9 +25,12 @@ TABLES = [Task]
 
 def initialize_db():
     """initializes the database and creates the required tables"""
-    DATABASE.connect()
-    DATABASE.create_tables(TABLES, safe=True)
-    DATABASE.close()
+    try:
+        DATABASE.connect()
+        DATABASE.create_tables(TABLES, safe=True)
+        DATABASE.close()
+    except peewee.OperationalError:
+        pass
 
 
 def drop_db():

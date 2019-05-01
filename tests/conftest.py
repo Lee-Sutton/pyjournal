@@ -33,6 +33,13 @@ def test_db(tmpdir):
 @pytest.fixture()
 def db():
     """Initializes the database for testing purposes"""
+    yield
+    models.drop_db()
+
+
+@pytest.fixture()
+def initialized_db():
+    """Initializes the database for testing purposes"""
     models.initialize_db()
     yield
     models.drop_db()
