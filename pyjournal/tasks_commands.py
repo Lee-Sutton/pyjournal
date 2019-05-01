@@ -31,4 +31,5 @@ def todos():
     """List all current todos"""
     initialize_db()
     for task in Task.select():
-        click.echo(task.name)
+        click.echo(f'{task.id}) {task.name}')
+
