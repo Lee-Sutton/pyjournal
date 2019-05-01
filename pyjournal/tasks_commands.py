@@ -18,7 +18,13 @@ def tasks():
     click.echo(tasks)
 
 
-@click.command()
+@click.command(name='t')
 @click.argument('task')
 def add_task(task):
-    pass
+    Task.create(name=task)
+
+
+@click.command()
+def todos():
+    for task in Task.select():
+        click.echo(task.name)

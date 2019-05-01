@@ -1,7 +1,7 @@
 from os import path
 from freezegun import freeze_time
 from pyjournal.utils import makedirs_touch
-from pyjournal.tasks_commands import tasks, add_task
+from pyjournal.tasks_commands import tasks, add_task, todos
 from pyjournal.db.models import Task
 
 
@@ -28,3 +28,12 @@ def test_add_task(db, runner):
     assert result.exit_code == 0
     saved_task = Task.select().where(Task.name == task)
     assert len(saved_task)
+
+
+def test_todos(db, runner):
+    """it should list tasks in the database"""
+    task = 'dummy task here'
+    Task.create(name=task)
+    result = runner.invoke(todos)
+    assert result.exit_code == 0
+    assert task in result.output
