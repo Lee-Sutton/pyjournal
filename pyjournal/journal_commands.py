@@ -1,6 +1,6 @@
 import os
 import datetime
-from pyjournal.database import initialize_database
+from pyjournal.database import initialize_database, get_config
 from pyjournal.utils import makedirs_touch
 from pyjournal.editor import open_editor
 from tinydb import Query
@@ -24,8 +24,7 @@ def init(path):
 @click.command(name='open')
 def open_journal():
     """Opens the journal"""
-    db = initialize_database()
-    config = db.get(Query().journal_path.exists())
+    config = get_config()
     os.chdir(config['journal_path'])
     open_editor(config['journal_path'])
 
@@ -36,8 +35,7 @@ def today():
     Opens the journal entry for today. A new document
     is created if it does not already exist
     """
-    db = initialize_database()
-    config = db.get(Query().journal_path.exists())
+    config = get_config()
     today = datetime.datetime.today()
     journal_file = os.path.join(config['journal_path'],
                                 f'{today.year}/{today.month}/{today.day}.md')
@@ -51,8 +49,7 @@ def today():
 @click.argument('topic_title')
 def topic(topic_title):
     """Creates a new document for the input topic"""
-    db = initialize_database()
-    config = db.get(Query().journal_path.exists())
+    config = get_config()
 
     filename = topic_title.replace(' ', '-')
     journal_file = os.path.join(config['journal_path'],
