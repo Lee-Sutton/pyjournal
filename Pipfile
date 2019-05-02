@@ -28,6 +28,7 @@ tinydb = "*"
 jira = "*"
 pygithub = "*"
 peewee = "*"
+bullet = "*"
 
 [pipenv]
 allow_prereleases = true

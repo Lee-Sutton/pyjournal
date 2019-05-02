@@ -11,3 +11,10 @@ def test_task_insert():
     assert task.created_at is not None
     assert task.is_done is False
     assert task.is_archived is False
+
+
+def test_config_model():
+    """It should insert into the database"""
+    initialize_db()
+    config = Config.create(journal_dir='dummy dir')
+    assert config is not None
