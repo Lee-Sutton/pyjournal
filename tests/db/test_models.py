@@ -1,6 +1,6 @@
 """model test suite"""
 import pytest
-from pyjournal.db.models import Task, initialize_db
+from pyjournal.db.models import Task, initialize_db, Config
 
 
 def test_task_insert():
@@ -16,5 +16,5 @@ def test_task_insert():
 def test_config_model():
     """It should insert into the database"""
     initialize_db()
-    config = Config.create(journal_dir='dummy dir')
+    config = Config.create(journal_dir='dummy dir', editor='vim')
     assert config is not None

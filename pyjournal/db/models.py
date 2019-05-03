@@ -20,12 +20,17 @@ class Task(peewee.Model):
     class Meta:
         database = DATABASE
 
+
 class Config(peewee.Model):
     """Model for storing user configuration"""
-    pass
+    journal_dir = peewee.CharField()
+    editor = peewee.CharField()
+
+    class Meta:
+        database = DATABASE
 
 
-TABLES = [Task]
+TABLES = [Task, Config]
 
 
 def initialize_db():
