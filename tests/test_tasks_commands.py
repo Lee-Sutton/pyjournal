@@ -6,7 +6,7 @@ from pyjournal.db.models import Task, initialize_db
 
 
 @freeze_time('Jan 1 2020')
-def test_todo(runner, journal_test_dir, initialized_database):
+def test_todo(runner, journal_test_dir, initialized_journal):
     """The user wants to list all the tasks in their journal"""
     journal_file = path.join(journal_test_dir, '2020/1/1.md')
     makedirs_touch(journal_file)

@@ -11,17 +11,18 @@ from freezegun import freeze_time
 from tinydb import where
 
 from pyjournal.journal_commands import init, today, topic, open_journal
+from pyjournal.db.models import Config
 
 
 @freeze_time('Jan 1 2020')
-def test_init(runner, journal_test_dir, test_db):
+def test_init(runner, journal_test_dir, initialized_db):
     # The user initializes the journal
     result = runner.invoke(init, args=['--path', journal_test_dir])
     assert result.exit_code == 0
     assert f'Journal initialized at {journal_test_dir}' in result.output
 
-    config = test_db.get(where('journal_path') == journal_test_dir)
-    assert config['journal_path'] == journal_test_dir
+    config = Config.get()
+    assert config.journal_dir == journal_test_dir
 
     # A directory is created for the journal notes
     assert path.exists(journal_test_dir)
@@ -29,7 +30,7 @@ def test_init(runner, journal_test_dir, test_db):
 
 @freeze_time('Jan 1 2020')
 @patch('pyjournal.journal_commands.open_editor', autospec=True)
-def test_today(open_editor, initialized_database, runner, journal_test_dir):
+def test_today(open_editor, initialized_journal, runner, journal_test_dir):
     # The user wants to create a journal entry for today
     # A directory is created for the current year and month
     result = runner.invoke(today)
@@ -44,7 +45,7 @@ def test_today(open_editor, initialized_database, runner, journal_test_dir):
 
 
 @patch('pyjournal.journal_commands.open_editor', autospec=True)
-def test_open(open_editor, initialized_database, runner, journal_test_dir):
+def test_open(open_editor, initialized_journal, runner, journal_test_dir):
     # The user wants to create a journal entry for today
     # A directory is created for the current year and month
     result = runner.invoke(open_journal)
@@ -58,7 +59,7 @@ def test_open(open_editor, initialized_database, runner, journal_test_dir):
 
 @freeze_time('Jan 1 2020')
 @patch('pyjournal.journal_commands.open_editor', autospec=True)
-def test_topic(open_editor, runner, journal_test_dir, initialized_database):
+def test_topic(open_editor, runner, journal_test_dir, initialized_journal):
     """The user wants to a new journal file for the input topic"""
     result = runner.invoke(topic, args=['dummy topic'])
     assert result.exit_code == 0

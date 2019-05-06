@@ -21,6 +21,7 @@ pytest-cov = "*"
 faker = "*"
 black = "*"
 yapf = "*"
+ipython = "*"
 
 [packages]
 click = "*"

@@ -41,6 +41,7 @@ def db():
 def initialized_db():
     """Initializes the database for testing purposes"""
     models.initialize_db()
+    models.drop_db()
     yield
     models.drop_db()
 
@@ -54,7 +55,7 @@ def fake():
 
 
 @pytest.fixture()
-def initialized_database(runner, journal_test_dir, test_db):
+def initialized_journal(runner, journal_test_dir, initialized_db):
     """Returns an initialized instance of the database"""
     runner.invoke(init, args=['--path', journal_test_dir])
-    yield test_db
+    yield initialized_db

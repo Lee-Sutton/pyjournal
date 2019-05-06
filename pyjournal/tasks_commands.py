@@ -5,14 +5,14 @@ import click
 from tinydb import Query
 
 from pyjournal.database import initialize_database, get_config
-from pyjournal.db.models import Task, initialize_db
+from pyjournal.db.models import Task, initialize_db, Config
 
 
 @click.command()
 def tasks():
     """Lists all tasks in the journal"""
-    config = get_config()
-    os.chdir(config['journal_path'])
+    config = Config.get()
+    os.chdir(config.journal_dir)
     tasks = subprocess.check_output(['grep', '-ri', 'TODO', '.'])
     click.echo(tasks)
 
