@@ -43,5 +43,4 @@ def initialize_db():
         pass
 
 
-
 initialize_db()

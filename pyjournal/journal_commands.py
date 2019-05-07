@@ -12,14 +12,14 @@ import click
 @click.option('--editor', default='vim', help='editor to open your journal')
 def init(path, editor):
     """Initializes journal directory if it does not exist"""
-    journal_path = os.path.abspath(os.path.expanduser(path))
+    journal_dir = os.path.abspath(os.path.expanduser(path))
 
     # FIXME prompt the user if it's already there
-    models.Config.create(journal_dir=path, editor=editor)
-    click.echo(f'Journal initialized at {journal_path}')
+    models.Config.create(journal_dir=journal_dir, editor=editor)
+    click.echo(f'Journal initialized at {journal_dir}')
 
-    if not os.path.exists(journal_path):
-        os.makedirs(journal_path)
+    if not os.path.exists(journal_dir):
+        os.makedirs(journal_dir)
 
 
 @click.command(name='open')
