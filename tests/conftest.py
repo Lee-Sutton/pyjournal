@@ -1,4 +1,3 @@
-import os
 from os import path
 
 import pytest
@@ -33,13 +32,6 @@ def test_db():
 
 
 @pytest.fixture()
-def db():
-    """Initializes the database for testing purposes"""
-    yield
-    models.drop_db()
-
-
-@pytest.fixture()
 def initialized_db():
     """Initializes the database for testing purposes"""
     models.initialize_db()
@@ -57,7 +49,7 @@ def fake():
 
 
 @pytest.fixture()
-def initialized_journal(runner, journal_test_dir, initialized_db):
+def initialized_journal(runner, journal_test_dir, test_db):
     """Returns an initialized instance of the database"""
     runner.invoke(init, args=['--path', journal_test_dir])
-    yield initialized_db
+    yield test_db

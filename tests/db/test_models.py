@@ -12,7 +12,7 @@ def test_task_insert(test_db):
     assert task.is_archived is False
 
 
-def test_config_model():
+def test_config_model(test_db):
     """It should insert into the database"""
     config = Config.create(journal_dir='dummy dir', editor='vim')
     assert config is not None

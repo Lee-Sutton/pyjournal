@@ -1,11 +1,9 @@
 import os
 import datetime
-from pyjournal.database import initialize_database, get_config
 from pyjournal.db.models import Config
 from pyjournal.utils import makedirs_touch
 from pyjournal.editor import open_editor
 from pyjournal.db import models
-from tinydb import Query
 import click
 
 
@@ -14,7 +12,6 @@ import click
 @click.option('--editor', default='vim', help='editor to open your journal')
 def init(path, editor):
     """Initializes journal directory if it does not exist"""
-    models.initialize_db()
     journal_path = os.path.abspath(os.path.expanduser(path))
 
     # FIXME prompt the user if it's already there
