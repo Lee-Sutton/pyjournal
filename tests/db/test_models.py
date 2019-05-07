@@ -1,11 +1,10 @@
 """model test suite"""
-import pytest
-from pyjournal.db.models import Task, initialize_db, Config
+from pyjournal.db.models import Task, Config
 
 
-def test_task_insert():
+def test_task_insert(test_db):
     """it should insert into the database and provide sensible defaults"""
-    initialize_db()
+    # initialize_db()
     task = Task.create(name="dummy task", is_done=False)
     assert task.name == "dummy task"
     assert task.created_at is not None
@@ -13,8 +12,7 @@ def test_task_insert():
     assert task.is_archived is False
 
 
-def test_config_model():
+def test_config_model(test_db):
     """It should insert into the database"""
-    initialize_db()
     config = Config.create(journal_dir='dummy dir', editor='vim')
     assert config is not None

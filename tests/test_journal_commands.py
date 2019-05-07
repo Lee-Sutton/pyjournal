@@ -15,7 +15,7 @@ from pyjournal.db.models import Config
 
 
 @freeze_time('Jan 1 2020')
-def test_init(runner, journal_test_dir, initialized_db):
+def test_init(runner, journal_test_dir, test_db):
     # The user initializes the journal
     result = runner.invoke(init, args=['--path', journal_test_dir])
     assert result.exit_code == 0
