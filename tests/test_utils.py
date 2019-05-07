@@ -12,7 +12,9 @@ def tmp_filepath(tmpdir):
 
 
 def test_directory_created(tmp_filepath):
-    """it should create a directory for the database if it does not already exist"""
+    """
+    it should create a directory for the database if it does not already exist
+    """
     makedirs_touch(tmp_filepath)
     assert os.path.exists(tmp_filepath)
 

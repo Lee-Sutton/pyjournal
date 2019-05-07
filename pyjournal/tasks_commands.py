@@ -27,4 +27,3 @@ def todos():
     """List all current todos"""
     for task in Task.select():
         click.echo(f'{task.id}) {task.name}')
-

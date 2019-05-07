@@ -6,12 +6,10 @@ import os
 from os import path
 from unittest.mock import patch
 
-import pytest
 from freezegun import freeze_time
-from tinydb import where
 
-from pyjournal.journal_commands import init, today, topic, open_journal
 from pyjournal.db.models import Config
+from pyjournal.journal_commands import init, today, topic, open_journal
 
 
 @freeze_time('Jan 1 2020')
