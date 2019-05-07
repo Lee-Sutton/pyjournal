@@ -5,7 +5,7 @@ from click.testing import CliRunner
 import faker
 from faker.providers import internet
 
-from pyjournal.db import models
+from pyjournal import models
 from pyjournal.journal_commands import init
 
 

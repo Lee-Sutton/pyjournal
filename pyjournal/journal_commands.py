@@ -1,10 +1,11 @@
-import os
 import datetime
-from pyjournal.db.models import Config
-from pyjournal.utils import makedirs_touch
-from pyjournal.editor import open_editor
-from pyjournal.db import models
+import os
+
 import click
+
+from pyjournal.editor import open_editor
+from pyjournal.models import Config
+from pyjournal.utils import makedirs_touch
 
 
 @click.command()
@@ -15,7 +16,7 @@ def init(path, editor):
     journal_dir = os.path.abspath(os.path.expanduser(path))
 
     # FIXME prompt the user if it's already there
-    models.Config.create(journal_dir=journal_dir, editor=editor)
+    Config.create(journal_dir=journal_dir, editor=editor)
     click.echo(f'Journal initialized at {journal_dir}')
 
     if not os.path.exists(journal_dir):

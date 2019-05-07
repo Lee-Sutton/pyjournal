@@ -1,5 +1,5 @@
 """model test suite"""
-from pyjournal.db.models import Task, Config
+from pyjournal.models import Task, Config
 
 
 def test_task_insert(test_db):

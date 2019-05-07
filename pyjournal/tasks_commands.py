@@ -3,7 +3,7 @@ import subprocess
 
 import click
 
-from pyjournal.db.models import Task, Config
+from pyjournal.models import Task, Config
 
 
 @click.command()

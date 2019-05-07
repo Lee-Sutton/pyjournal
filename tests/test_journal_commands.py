@@ -8,7 +8,7 @@ from unittest.mock import patch
 
 from freezegun import freeze_time
 
-from pyjournal.db.models import Config
+from pyjournal.models import Config
 from pyjournal.journal_commands import init, today, topic, open_journal
 
 
