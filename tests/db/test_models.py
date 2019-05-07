@@ -2,7 +2,7 @@
 from pyjournal.db.models import Task, Config
 
 
-def test_task_insert():
+def test_task_insert(test_db):
     """it should insert into the database and provide sensible defaults"""
     # initialize_db()
     task = Task.create(name="dummy task", is_done=False)

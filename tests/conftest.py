@@ -6,7 +6,6 @@ from click.testing import CliRunner
 import faker
 from faker.providers import internet
 
-from pyjournal.database import initialize_database
 from pyjournal.db import models
 from pyjournal.journal_commands import init
 
@@ -23,11 +22,14 @@ def journal_test_dir(tmpdir):
 
 
 @pytest.fixture()
-def test_db(tmpdir):
-    """creates a temporary database for testing"""
-    os.environ['DB_PATH'] = str(tmpdir.join('config.json'))
-    yield initialize_database()
-    os.environ.pop('DB_PATH')
+def test_db():
+    """
+    Creates a temporary transaction for testing and rolls back the database
+    when the test completes
+    """
+    with models.DATABASE.transaction() as transaction:
+        yield transaction
+        transaction.rollback()
 
 
 @pytest.fixture()
