@@ -7,7 +7,6 @@ def test_cli(runner):
     assert 'init' in result.output
     assert 'today' in result.output
     assert 'tasks' in result.output
-    assert 'jira' in result.output
     assert 'topic' in result.output
     assert 'open' in result.output
     assert 'todos' in result.output

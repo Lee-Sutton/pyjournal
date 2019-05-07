@@ -47,3 +47,6 @@ def drop_db():
     """clears the database and drops all tables"""
     DATABASE.drop_tables(TABLES, safe=True)
     DATABASE.close()
+
+
+initialize_db()
