@@ -25,5 +25,6 @@ def add_task(task):
 @click.command()
 def todos():
     """List all current todos"""
-    for task in Task.select():
-        click.echo(f'{task.id}) {task.name}')
+    content = [f'- [ ] {task.name}' for task in Task.select()]
+    result = click.edit('\n'.join(content))
+    click.echo(result)

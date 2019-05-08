@@ -1,5 +1,6 @@
 from os import path
 from freezegun import freeze_time
+from unittest.mock import patch
 from pyjournal.utils import makedirs_touch
 from pyjournal.tasks_commands import tasks, add_task, todos
 from pyjournal.models import Task
@@ -30,10 +31,11 @@ def test_add_task(test_db, runner):
     assert len(saved_task)
 
 
-def test_todos(test_db, runner):
+@patch('pyjournal.tasks_commands.click.edit')
+def test_todos(mock_edit, test_db, runner):
     """it should list tasks in the database"""
     task = 'dummy task here'
     Task.create(name=task)
     result = runner.invoke(todos)
     assert result.exit_code == 0
-    assert task in result.output
+    mock_edit.assert_called_with(f'- [ ] {task}')
