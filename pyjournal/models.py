@@ -20,6 +20,9 @@ class Task(peewee.Model):
     class Meta:
         database = DATABASE
 
+    def __repr__(self):
+        return f'[<Task> | {self.is_done} | {self.name}]'
+
 
 class Config(peewee.Model):
     """Model for storing user configuration"""

@@ -2,7 +2,9 @@ from os import path
 from freezegun import freeze_time
 from unittest.mock import patch
 from pyjournal.utils import makedirs_touch
-from pyjournal.tasks_commands import tasks, add_task, todos
+from pyjournal.tasks_commands import (tasks, add_task, todos,
+                                      parse_markdown_checkboxes,
+                                      complete_tasks, CompletedItem)
 from pyjournal.models import Task
 
 
@@ -39,3 +41,19 @@ def test_todos(mock_edit, test_db, runner):
     result = runner.invoke(todos)
     assert result.exit_code == 0
     mock_edit.assert_called_with(f'- [ ] {task}')
+
+
+def test_parse_markdown_checkboxes():
+    result = parse_markdown_checkboxes('- [x] dummy task')
+    assert len(result) == 1
+    assert result[0].is_complete
+    assert result[0].description == 'dummy task'
+
+
+def test_complete_tasks(test_db):
+    """It should complete the list of input tasks"""
+    task_name = 'dummy task'
+    Task.create(name=task_name, is_done=False)
+    complete_tasks([CompletedItem(True, task_name)])
+    task = Task.get(Task.name == task_name)
+    assert task.is_done
